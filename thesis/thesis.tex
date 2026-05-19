@@ -1,0 +1,291 @@
+\documentclass[BTech]{iitmdiss}
+\usepackage{textcomp}
+\usepackage{times}
+\renewcommand{\ttdefault}{cmtt}  % use Computer Modern teletype instead of Courier
+\usepackage{tabularx}
+\usepackage{url}
+\usepackage{rotating}
+%\usepackage{adjustbox}
+\usepackage{mathtools}
+%\usepackage{pbox}
+%\usepackage{multirow}
+\usepackage{float}
+\usepackage{t1enc}
+%\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{xcolor}
+\usepackage[driverfallback=dvipdfm]{hyperref}
+
+\graphicspath{{figures/}{figures/live_demo/}}
+
+\begin{document}
+
+%%% TITLE
+\title{Multimodal Sensing of Operator Pairs: A Dual-Eye-Tracking Pipeline for Coordination-Failure Prediction}
+\author{Arya Sikder}
+\date{May 2026}
+\department{Chemical Engineering}
+\newgeometry{left=1in,right=1.5in,top=1in,bottom=0.667in}
+\maketitle
+
+%%% CERTIFICATE
+\certificate
+\vspace*{0.5in}
+\noindent This is to certify that the thesis titled
+{\bf Multimodal Sensing of Operator Pairs: A Dual-Eye-Tracking Pipeline for Coordination-Failure Prediction},
+submitted by {\bf Arya Sikder}, to the Indian Institute of Technology Madras for the award of the degree of
+{\bf Bachelor of Technology}, is a bona fide record of the research work done by him under my supervision.
+The contents of this thesis, in full or in parts, have not been submitted to any other Institute or
+University for the award of any degree or diploma.
+
+\vspace*{1.0in}
+
+\begin{singlespacing}
+\hspace*{-0.25in}
+\parbox{2.5in}{
+\noindent {\bf Prof.\ Rajagopalan Srinivasan} \\
+\noindent Research Guide \\
+\noindent \textit{Professor} \\
+\noindent Dept.\ of Chemical Engineering \\
+\noindent IIT Madras, 600 036
+}
+\hspace*{1.5in}
+\parbox{2.5in}{
+\vspace*{0.3in}
+\noindent Place: Chennai \\
+Date: May 2026
+}
+\end{singlespacing}
+
+%%% ACKNOWLEDGEMENTS
+\newgeometry{left=1.5in,right=1in,top=1in,bottom=0.667in}
+\acknowledgements
+
+I am grateful to my research guide, Prof.\ Rajagopalan Srinivasan, for his guidance and for the freedom to pursue this line of work. I thank the 47 pairs of student participants who contributed their time to the recording sessions, and the lab staff who supported the six-modality recording protocol. The analysis benefited from open-source contributions to scikit-learn, LightGBM, XGBoost, PyRQA and matplotlib.
+
+%%% ABSTRACT
+\abstract
+\noindent KEYWORDS: \hspace*{0.5em} \parbox[t]{4.4in}{operator monitoring; dyadic coordination; multimodal physiological sensing; dual eye-tracking; joint visual attention; cardiac synchrony; failure-mode taxonomy; workload composites.}
+
+\vspace*{24pt}
+\noindent
+\input{_abstract.tex}
+
+\pagebreak
+
+\disclaimer
+The Department of Chemical Engineering, IIT Madras and the staff of IIT Madras do not accept any responsibility for the truth, accuracy or completeness of material contained within or associated with this dissertation.
+
+Persons using all or any part of this material do so at their own risk, and not at the risk of the Department of Chemical Engineering, IIT Madras and the staff of IIT Madras.
+
+This document, the associated hardware, software, drawings, and other material set out in the associated appendices should not be used for any other purpose: if they are so used, it is entirely at the risk of the user.
+
+\pagebreak
+
+%%% TOC, LoT, LoF
+\begin{singlespace}
+\tableofcontents
+\thispagestyle{empty}
+\listoftables
+\addcontentsline{toc}{chapter}{LIST OF TABLES}
+\listoffigures
+\addcontentsline{toc}{chapter}{LIST OF FIGURES}
+\end{singlespace}
+
+%%% ABBREVIATIONS
+\newpage
+\begin{tabbing}
+\end{tabbing}
+\abbreviations
+\noindent
+\begin{tabbing}
+xxxxxxxxxxxxxx \= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \kill
+\textbf{AUC} \> Area Under the (ROC) Curve \\
+\textbf{AOI} \> Area Of Interest \\
+\textbf{BPM} \> Beats Per Minute \\
+\textbf{CRQA} \> Cross-Recurrence Quantification Analysis \\
+\textbf{CV}  \> Cross-Validation \\
+\textbf{GroupKFold} \> Group-aware K-fold cross-validation \\
+\textbf{HR}  \> Heart Rate \\
+\textbf{HRV} \> Heart Rate Variability \\
+\textbf{ICC} \> Intraclass Correlation Coefficient \\
+\textbf{LLM} \> Large Language Model \\
+\textbf{MdRQA} \> Multidimensional Recurrence Quantification Analysis \\
+\textbf{NASA-TLX} \> NASA Task Load Index \\
+\textbf{PCA} \> Principal Component Analysis \\
+\textbf{PSMM} \> Perceived Shared Mental Model \\
+\textbf{RMSSD} \> Root Mean Square of Successive Differences \\
+\textbf{SHAP} \> SHapley Additive exPlanations \\
+\textbf{W$_D$, W$_M$, W$_{\text{team}}$} \> Director / Matcher / pair-level workload composites \\
+\end{tabbing}
+
+\pagebreak
+
+%%% NOTATIONS
+\chapter*{\centerline{NOTATIONS}}
+\addcontentsline{toc}{chapter}{NOTATIONS}
+\begin{singlespace}
+\begin{tabbing}
+xxxxxxxxxxxx \= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \kill
+$n$         \>  Number of trials \\
+$n_+$       \>  Number of failure trials (positive class) \\
+$d$         \>  Cohen's $d$ effect size \\
+$\rho$      \>  Spearman rank correlation \\
+$\alpha_1$  \>  Detrended-fluctuation-analysis short-term scaling exponent \\
+$k$         \>  Number of K-means clusters \\
+$B$         \>  Bootstrap resample count \\
+\end{tabbing}
+\end{singlespace}
+
+\pagebreak
+\clearpage
+\pagenumbering{arabic}
+
+%%% MAIN BODY (Introduction, Methods, Results, Discussion, Conclusion)
+\input{_body.tex}
+
+
+%%% APPENDICES
+\appendix
+
+\chapter{FAILURE-MODE CLUSTERING: SUPPLEMENTARY DETAILS}
+\label{app:clustering}
+
+This appendix expands the failure-mode taxonomy reported in the main text with additional methodological detail, robustness checks, and per-cluster signature breakdowns.
+
+\section{Clustering input fingerprint}
+
+K-means at $k=4$ was applied to the principal components of a within-pair-z-scored, sign-aligned fingerprint of 15 features, restricted to the 79~trials with full bilateral physiology coverage. The fingerprint features were drawn from three sub-families:
+
+\begin{itemize}
+\item \textbf{Per-operator physiology.} Director and Matcher pupil mean, Director and Matcher heart-rate mean, Director and Matcher RMSSD (six features in total).
+\item \textbf{Joint cardiac coupling.} HR cross-recurrence quantification analysis (cross-CRQA) determinism and laminarity; pre-late-minus-early HR synchrony delta (three features).
+\item \textbf{Cross-modal coupling and dynamics.} Joint area-of-interest gaze convergence within a 100-pixel radius; speech--Director-gaze coupling; mid-trial Director pupil mean; mid-trial Director HR mean (four features); plus the two within-pair-normalised workload composites $W_{\text{director}}$ and $W_{\text{matcher}}$.
+\end{itemize}
+
+After median imputation and standardisation, K-means with $n_{\text{init}}=50$ was run for $k\in\{2,\dots,8\}$. The choice of $k=4$ is justified in the following section on substantive and statistical grounds; it is not chosen on silhouette alone.
+
+\section{Choice of cluster count}
+\label{app:kchoice}
+
+Silhouette score across $k\in\{2,\dots,8\}$ favours $k=2$ ($s=0.37$) by a wide margin, with $k=3$ at $s=0.12$ and $k=4,5,6,7$ all within the range $0.13$--$0.17$. The silhouette curve is therefore close to flat past $k=2$, and the $k=2$ peak corresponds to a trivial split of the cohort into a single large bucket and a small minority cluster, which carries no diagnostic information about \emph{why} a trial fails. Three additional criteria were applied to select $k$ (Figure~\ref{fig:kchoice}).
+
+First, inertia returns flatten past $k=4$. Second, the cluster-size profile across $k$ shows that $k\geq 5$ produces clusters of size $1$, and $k\geq 6$ produces multiple clusters of size $\leq 2$. Singleton clusters cannot support a Cohen's~$d$ or Mann--Whitney $U$ test, and therefore cannot anchor any per-cluster statistical claim in the rest of the analysis. Third, the substantive interpretability changes with $k$. At $k=2$, overload, disengagement, and decoupling collapse into one bucket. At $k=3$, the Matcher-Disengaged and Director-Disengaged clusters, which have \emph{opposite} pupil signatures, merge into one cluster whose centroid pupil sits near zero, removing the asymmetry that motivates the taxonomy. At $k=5$, the largest cluster splits along a within-pair RMSSD axis that tracks individual parasympathetic-tone differences rather than a coordination mode. At $k=4$, each cluster has $\geq 5$ trials, a clean psychophysiology signature (Director-Overloaded: pupil~$\uparrow$, HR~$\uparrow$, RMSSD~$\downarrow$; Matcher-Disengaged: Matcher HR~$\downarrow$, joint coupling~$\uparrow$; Director-Disengaged: Director pupil~$\downarrow$; Calm-Decoupled: HR~$\downarrow$, RMSSD~$\uparrow$, joint coupling collapses), and survives the seed-stability check reported in the next section. The four-cluster solution is therefore the smallest $k$ at which every cluster simultaneously satisfies psychophysiology interpretability and statistical usability.
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.95\textwidth]{k_choice_interpretability.png}
+\caption[Choice of cluster count (k=4)]{Choice of cluster count. (a) Silhouette across $k=2,\dots,8$ favours the trivial two-bucket split; the curve is flat from $k=4$ onward. (b) Inertia elbow flattens past $k=4$. (c) Cluster-size profile: $k\geq 5$ begins to produce singleton clusters that cannot support per-cluster statistics. (d) Substantive interpretability narrative: $k=4$ is the smallest $k$ at which every cluster has a distinct, established psychophysiology signature and at which every cluster has $\geq 5$ trials.}
+\label{fig:kchoice}
+\end{figure}
+
+\section{Cluster stability under random reseeding}
+
+To check that the four-cluster partition is not an artefact of the random-seed used by K-means, the algorithm was re-run with $n_{\text{init}}=20$ for 50 distinct random seeds. For every trial-pair, the fraction of seeds on which the two trials co-assign to the same cluster was computed. Within-cluster pairs (relative to the reference partition obtained with seed 42) co-assigned at a mean probability of $0.77$, compared to $0.11$ for between-cluster pairs, a $7\times$ separation (Figure~\ref{fig:cluster-stability}). The four-cluster solution is therefore reproducible structure rather than seed-dependent noise.
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.85\textwidth]{cluster_stability.png}
+\caption[Cluster stability under random reseeding]{K-means co-assignment probability across 50 random seeds. Within-cluster pair distribution (relative to the reference partition) is concentrated near $1$; between-cluster pair distribution is concentrated near $0$. Mean co-assignment within $= 0.77$ versus between $= 0.11$.}
+\label{fig:cluster-stability}
+\end{figure}
+
+\section{Per-cluster one-vs-rest effect sizes}
+
+For each cluster and each fingerprint feature, an in-cluster vs out-of-cluster Cohen's~$d$ and Mann--Whitney $U$ $p$-value were computed (Figure~\ref{fig:cluster-d}). Director-Overloaded shows $d=+1.69$ on Director pupil ($p<0.001$), $d=+1.41$ on $W_{\text{director}}$ ($p<0.001$), $d=+1.02$ on mid-trial Director HR ($p<0.001$), and $d=+0.99$ on Director HR mean ($p<0.001$). Matcher-Disengaged shows $d=-1.24$ on Matcher HR ($p<0.001$), with the Matcher composite $W_{\text{matcher}}$ at $d=-0.93$ ($p<0.01$). Director-Disengaged shows $d=-1.83$ on Director pupil ($p<0.001$) and $d=-1.47$ on speech--Director-gaze coupling ($p<0.001$). Calm-Decoupled shows the strongest signature: $d=-5.36$ on HR cross-CRQA determinism and $d=-4.81$ on HR cross-CRQA laminarity (both $p<0.001$), with $d=+2.58$ on Director RMSSD ($p<0.01$). Each cluster has multiple features at $|d|>0.5$ with $p<0.001$.
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.98\textwidth]{cluster_effect_sizes.png}
+\caption[Per-cluster one-vs-rest effect sizes]{Per-cluster top-six features by $|d|$ (one-vs-rest), with Mann--Whitney $U$ $p$-stars overlaid. Each panel is one cluster.}
+\label{fig:cluster-d}
+\end{figure}
+
+\section{Per-cluster failure rates with Wilson confidence intervals}
+
+\begin{table}[!ht]
+\caption[Per-cluster failure rates with Wilson 95\% CIs]{Per-cluster failure rates with Wilson 95\% confidence intervals.}
+\label{tab:cluster-ci}
+\centering
+\begin{tabular}{lrrr}
+\toprule
+Cluster & $n$ & Failure rate & Wilson 95\% CI \\
+\midrule
+Director-Disengaged & 30 & 53\% & $[36\%, 70\%]$ \\
+Matcher-Disengaged  & 23 & 57\% & $[37\%, 74\%]$ \\
+Director-Overloaded & 21 & 48\% & $[28\%, 68\%]$ \\
+Calm-Decoupled      &  5 & 0\%  & $[0\%, 43\%]$  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The three larger clusters carry meaningful failure rates near 50\% with non-degenerate CIs. Calm-Decoupled records zero failures in five trials, with a Wilson 95\% CI of $[0\%, 43\%]$. Given the small cell count, we treat Calm-Decoupled as hypothesis-generating rather than as a confirmed failure-free mode.
+
+\section{Within-cluster behavioural signatures}
+
+Beyond the physiology features used for clustering, each cluster carries a distinct behavioural fingerprint on observable trial features (LLM-extracted dialogue events, per-operator speech timing, drawing dynamics). Director-Overloaded trials show elevated repair-turn counts, elevated misalignment events, and elevated Matcher drawing duty cycle. Matcher-Disengaged trials show elevated Director disfluencies and slightly elevated LLM-flagged errors. Director-Disengaged trials show suppressed Director and Matcher disfluencies and lower repair counts. Calm-Decoupled trials show modestly elevated repairs and elevated mean understanding scores (Figure~\ref{fig:behavioral-app}).
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.95\textwidth]{behavioral_signature.png}
+\caption[Per-cluster behavioural signatures]{Per-cluster mean of observable trial features, z-scored against the 225-trial cohort. Coloured bars: positive deviation from cohort mean; grey bars: negative.}
+\label{fig:behavioral-app}
+\end{figure}
+
+\section{Per-trial validation: random failure trials carry the cluster signature}
+\label{app:pertrial}
+
+The cluster-level analyses above operate on aggregate signatures (means, effect sizes, Wilson confidence intervals). To verify that the same multimodal signature is visible on individual trials rather than only on cluster means, three failure trials were drawn at random (seed $7$) from each of the four clusters, and their per-trial values were tabulated across eight columns spanning seven sensor families: Director HR (cardiac, smartwatch), Matcher HR (cardiac, smartwatch), Director pupil (gaze, Aurora ET), joint HR coupling (cross-CRQA determinism), joint gaze coupling (gaze convergence within $100$~px), the Director workload composite $W_{\text{director}}$, LLM-extracted repair count, and Matcher drawing duty cycle (Figure~\ref{fig:pertrial}). For Calm-Decoupled, which has zero failures, three successes were sampled and flagged explicitly. For each cluster, the columns corresponding to that cluster's multimodal signature were bolded.
+
+Across the twelve sampled failure trials, the bolded multimodal-signature cells consistently sit on the same side of the cohort median: Director-Overloaded trials show Director HR, Director pupil, joint HR coupling and $W_{\text{director}}$ all elevated above cohort baseline; Matcher-Disengaged trials show Matcher HR depressed and joint gaze coupling elevated; Director-Disengaged trials show Director pupil suppressed and joint HR coupling shifted. Behavioural columns track too: Director-Overloaded failure trials show inflated repair counts relative to cohort; Matcher-Disengaged failure trials show suppressed drawing duty cycle. The per-trial table therefore corroborates the cluster-level signature claim at the level of individual trials, which is the granularity at which the predictor itself operates.
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.98\textwidth]{random_trial_examples.png}
+\caption[Per-trial validation]{Per-trial validation. Three randomly-drawn failure trials per cluster (seed~$7$; for Calm-Decoupled, three successes are shown because the cluster has zero failures, with an explicit flag). Each row is one trial. Eight columns span seven sensor families (cardiac, pupil, joint cardiac, joint gaze, workload composite, LLM dialogue, drawing duty cycle). Bolded cells are the cluster's multimodal signature; the cohort-median row at the top is the reference. Bolded cells consistently sit on the same side of cohort median across all three sampled trials per cluster.}
+\label{fig:pertrial}
+\end{figure}
+
+
+\chapter{JOINT WORKLOAD AND CARDIAC COUPLING}
+\label{app:joint}
+
+This appendix expands the joint workload finding reported in the main text. The pair-level coupling signal is dominated by a small family of joint cardiac features. When the two operators' heart-rate signals become more tightly coupled, failure becomes more likely, consistent with a stress-synchrony interpretation in which both operators' physiology locks under shared task demand.
+
+\section{Joint cardiac coupling features}
+
+Three joint cardiac features showed the strongest individual associations with trial outcome:
+
+\begin{itemize}
+\item \textbf{Joint HR coupling instability} (SD of windowed cross-correlation): Cohen's $d = +0.70$ (failure minus success), $p < 0.001$.
+\item \textbf{Joint HR cross-CRQA determinism} (predictability of the coupling state): $d = +0.70$, $p < 0.001$.
+\item \textbf{Joint HR cross-CRQA laminarity} (persistence of the coupled state): $d = +0.69$, $p < 0.001$.
+\end{itemize}
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.98\textwidth]{joint_workload.png}
+\caption[Joint cardiac coupling separates failure from success]{Joint cardiac coupling separates failure from success. Success trials (green) and failure trials (red) are shown as boxplots with individual trial points overlaid; the three joint HR-coupling features each show a Cohen's $d$ of approximately $0.7$ with $p < 0.001$.}
+\label{fig:joint-workload}
+\end{figure}
+
+\section{Mechanistic interpretation}
+
+Higher coupling on failure trials is consistent with a stress-synchrony mechanism: when both operators are under shared task demand and the Director's instructions are difficult to convey or follow, the two operators' autonomic states converge into a coupled high-arousal regime. The Calm-Decoupled cluster (Appendix~\ref{app:clustering}) is the corresponding low-arousal phenotype: both operators relaxed, with joint cardiac coupling far below cohort baseline. The two regimes therefore frame the operator-pair physiology along an arousal-coupled vs arousal-decoupled axis that is orthogonal to the per-operator overload-disengagement axis.
+
+\section{Contribution to the multimodal predictor}
+
+The modality ablation in the main text shows that the joint-coupling family contributes $+0.03$ AUC over the union of per-operator marginals. The joint cardiac coupling features appear consistently in the top SHAP feature rankings, and the pair-level workload composite $W_{\text{team}}$, which includes a negative weighting on joint cross-CRQA determinism, contributes as a top-tier SHAP feature in its own right.
+
+
+%%% BIBLIOGRAPHY
+\begin{singlespace}
+\bibliography{master,extra_refs}
+\end{singlespace}
+
+\end{document}
